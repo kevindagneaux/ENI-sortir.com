@@ -1,7 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Ceci est la page d'accueil.</h1>
+   <div id="front">
+       <h4>Date du jour: {{ "now" |date('d-m-y') }}</h4>
+       <h4>Participant: Micheline.M{# {{ app.user.pseudo }} #}</h4>
+   </div>
+    <h3>Filtrer les sorties :</h3>
+    <div>
+        {{ form_start(searchSortie) }}
+        {{ form_widget(searchSortie) }}
+        {{ form_end(searchSortie) }}
+    </div>
 {% endblock %}
 
 {% block title %} {{ parent() }} | Accueil {% endblock %}
