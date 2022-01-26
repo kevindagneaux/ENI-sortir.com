@@ -22,6 +22,21 @@ class SortieRepository extends ServiceEntityRepository
 
     public function searchSortie(Search $search){
 
+        // Version QueryBuilder
+        $queryBuilder = $this->createQueryBuilder('w');
+        if ($search->getDateDebut() != null){
+            $queryBuilder->andWhere('w.dateHeureDebut = '. $search->getDateDebut());
+        }
+
+        $queryBuilder->addOrderBy('w.author', 'DESC');
+        $query = $queryBuilder->getQuery();
+
+        // Ligne utilisé dans les deux versions.
+        $query->setMaxResults(20);
+        $result = $query->getResult();
+
+        return $result;
+
     }
     // /**
     //  * @return Sortie[] Returns an array of Sortie objects

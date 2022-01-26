@@ -56,7 +56,7 @@ class Sortie
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="organisateur")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $organisateur;
 

@@ -31,7 +31,6 @@ class SearchFormType extends AbstractType
             ->add('dateDebut', DateType::class, [
                 'label' => 'Entre',
                 'widget' => 'single_text',
-
             ])
             ->add('dateFin', DateType::class, [
                 'label' => 'Entre',
