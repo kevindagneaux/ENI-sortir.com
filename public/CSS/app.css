@@ -55,3 +55,15 @@ main {
     flex: 1;
 }
 
+label{
+    display: block;
+}
+
+.form_sortie {
+    margin-bottom: 1em;
+    box-sizing: border-box;
+    max-width: 75%;
+    width:13em ;
+}
+
+
