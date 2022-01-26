@@ -24,8 +24,14 @@ class SortieRepository extends ServiceEntityRepository
 
         // Version QueryBuilder
         $queryBuilder = $this->createQueryBuilder('w');
+        if ($search->getSearch() != null){
+            $queryBuilder->andWhere('w. = '. $search->getDateDebut());
+        }
         if ($search->getDateDebut() != null){
-            $queryBuilder->andWhere('w.dateHeureDebut = '. $search->getDateDebut());
+            $queryBuilder->andWhere('w.dateHeureDebut > '. $search->getDateDebut());
+        }
+        if ($search->getDateFin() != null){
+            $queryBuilder->andWhere('w.dateHeureDebut < '. $search->getDateFin());
         }
 
         $queryBuilder->addOrderBy('w.author', 'DESC');
