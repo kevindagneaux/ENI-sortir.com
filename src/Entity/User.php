@@ -31,6 +31,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="json")
+     * a sortir
      */
     private $roles = [];
 
@@ -57,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\Column(type="string", length=150, unique=true)
+     * ajouter uniqueEntity
      */
     private $mail;
 

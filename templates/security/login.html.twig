@@ -5,12 +5,13 @@
 {% block body %}
 <form method="post">
     {% if error %}
+        {{ dump(error) }}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
     {% if app.user %}
         <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
 
@@ -19,6 +20,11 @@
     <input type="text" value="{{ last_username }}" name="pseudo" id="inputPseudo" class="form-control" autocomplete="username" required autofocus>
     <label for="inputPassword">Password</label>
     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+    <label>
+        <input type="checkbox" name="_remember_me" checked/>
+        Se rappeler de moi
+    </label>
 
     <input type="hidden" name="_csrf_token"
            value="{{ csrf_token('authenticate') }}"
