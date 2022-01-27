@@ -3,7 +3,8 @@
 namespace App\Controller;
 
 use App\Form\SearchFormType;
-use App\modele\Search;
+use App\Modele\Search;
+use App\Repository\SortieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,16 +15,20 @@ class MainController extends AbstractController
     /**
      * @Route("/accueil", name="accueil")
      * */
-    public function accueil(Request $request):Response{
+    public function accueil(Request $request, SortieRepository $sortieRepository):Response{
 
-       // $search = new Search();
-        $searchSortie = $this->createForm(SearchFormType::class /* $search */);
+        $search = new Search();
+        $search->setCampus($this->getUser()->getParticipantCampus()); //modifier le get quand il aura été changer dans l'entité
+        $searchSortie = $this->createForm(SearchFormType::class,  $search );
+        $searchSortie->handleRequest($request);
 
-     /*   if ($searchSortie->handleRequest($request)->isSubmitted() && $searchSortie->isValid()){
-            $sortie = $sortieRepository->searchSortie($search);
-        }*/
+        $sorties = $sortieRepository->searchSortie($search);
+       // var_dump($sorties);
+
         return $this-> render('main/home.html.twig', [
-            'searchSortie' => $searchSortie -> createView()
+            'sorties' => $sorties,
+            'searchSortie' => $searchSortie -> createView(),
+
         ]);
 
     }

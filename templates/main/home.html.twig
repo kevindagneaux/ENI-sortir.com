@@ -9,10 +9,40 @@
     <div>
         {{ form_start(searchSortie) }}
         {{ form_widget(searchSortie) }}
+
+        <button type="submit">Rechercher</button>
         {{ form_end(searchSortie) }}
+
     </div>
     <div>
-
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom de la sortie</th>
+                    <th>Date de la sortie</th>
+                    <th>Clôture</th>
+                    <th>inscrit/places</th>
+                    <th>Etat</th>
+                    <th>inscrit</th>
+                    <th>Organisateur</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for sortie in sorties %}
+                <tr>
+                    <td>{{ sortie.nom }}</td>
+                    <td>{{ sortie.dateHeureDebut| date('d/M/Y h:m') }}</td>
+                    <td>{{ sortie.dateLimiteInscription| date('d/M/Y') }}</td>
+                    <td>8/{{ sortie.nbInscriptionMax }}</td>
+                    <td>{{ sortie.etat.libelle }}</td>
+                    <td>X</td>
+                    <td>{{ sortie.organisateur.pseudo }}</td>
+                    <td>Afficher</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endblock %}
 

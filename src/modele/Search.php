@@ -1,92 +1,109 @@
 <?php
 
-namespace App\modele;
+namespace App\Modele;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class Search extends AbstractController
+use App\Entity\Campus;
+
+class Search
 {
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $campus;
+    private Campus $campus;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
-    private $search;
+    private ?string $search = null;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $dateDebut;
+    private ?\DateTime $dateDebut = null;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $dateFin;
+    private ?\DateTime $dateFin = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $organisateur;
+    private ?bool $organisateur = false;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $inscrit;
+    private ?bool $inscrit = false;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $nonInscrit;
+    private ?bool $nonInscrit = false;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $fini;
+    private ?bool $fini = false;
 
-    public function getCampus()
+
+    public function getCampus(): Campus
     {
         return $this->campus;
     }
 
-    public function getSearch()
+    public function setCampus(Campus $campus): void
+    {
+        $this->campus = $campus;
+    }
+
+    public function getSearch(): ?string
     {
         return $this->search;
     }
 
-    public function getDateDebut()
+    public function setSearch(?string $search): void
+    {
+        $this->search = $search;
+    }
+
+    public function getDateDebut(): ?\DateTime
     {
         return $this->dateDebut;
     }
 
-    public function getDateFin()
+    public function setDateDebut(?\DateTime $dateDebut): void
+    {
+        $this->dateDebut = $dateDebut;
+    }
+
+    public function getDateFin(): ?\DateTime
     {
         return $this->dateFin;
     }
 
-    public function getOrganisateur()
+    public function setDateFin(?\DateTime $dateFin): void
+    {
+        $this->dateFin = $dateFin;
+    }
+
+    public function getOrganisateur(): ?bool
     {
         return $this->organisateur;
     }
 
-    public function getInscrit()
+    public function setOrganisateur(?bool $organisateur): void
+    {
+        $this->organisateur = $organisateur;
+    }
+
+    public function getInscrit(): ?bool
     {
         return $this->inscrit;
     }
 
-    public function getNonInscrit()
+    public function setInscrit(?bool $inscrit): void
+    {
+        $this->inscrit = $inscrit;
+    }
+
+    public function getNonInscrit(): ?bool
     {
         return $this->nonInscrit;
     }
 
-    public function getFini()
+    public function setNonInscrit(?bool $nonInscrit): void
+    {
+        $this->nonInscrit = $nonInscrit;
+    }
+
+    public function getFini(): ?bool
     {
         return $this->fini;
     }
+
+    public function setFini(?bool $fini): void
+    {
+        $this->fini = $fini;
+    }
+
 
 
 }
