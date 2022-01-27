@@ -24,6 +24,10 @@ class Campus
      */
     private $nom;
 
+    public function __toString() {
+        return $this->nom;
+    }
+
     /**
      * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="siteOrganisateur", orphanRemoval=false)
      */
