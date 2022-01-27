@@ -27,7 +27,7 @@ class EditProfileType extends AbstractType
             ->add('prenom')
             ->add('telephone')
             ->add('mail')
-            ->add('rattacher')
+            ->add('participantCampus')
             ->add('Enregistrer', SubmitType::class)
         ;
     }

@@ -8,7 +8,7 @@
     <p>Nom : {{ app.user.nom }}</p>
     <p>Téléphone : {{ app.user.telephone }}</p>
     <p>E-mail : {{ app.user.mail }}</p>
-    <p>Campus : {{ app.user.rattacher.nom }}</p>
+    <p>Campus : {{ app.user.participantCampus.nom }}</p>
 
     <a href="{{ path('profil_edit') }}">Modifier le Profile</a>
 {% endblock %}

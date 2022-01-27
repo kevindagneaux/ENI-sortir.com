@@ -86,7 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\ManyToOne(targetEntity=Campus::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $rattacher;
+    private $participantCampus;
 
     public function __construct()
     {
@@ -309,14 +309,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRattacher(): ?Campus
+    public function getParticipantCampus(): ?Campus
     {
-        return $this->rattacher;
+        return $this->participantCampus;
     }
 
-    public function setRattacher(?Campus $rattacher): self
+    public function setParticipantCampus(?Campus $participantCampus): self
     {
-        $this->rattacher = $rattacher;
+        $this->participantCampus = $participantCampus;
 
         return $this;
     }
