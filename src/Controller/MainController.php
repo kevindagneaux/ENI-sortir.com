@@ -18,7 +18,7 @@ class MainController extends AbstractController
     public function accueil(Request $request, SortieRepository $sortieRepository):Response{
 
         $search = new Search();
-        $search->setCampus($this->getUser()->getParticipantCampus()); //modifier le get quand il aura été changer dans l'entité
+        $search->setCampus($this->getUser()->getParticipantCampus());
         $searchSortie = $this->createForm(SearchFormType::class,  $search );
         $searchSortie->handleRequest($request);
 
