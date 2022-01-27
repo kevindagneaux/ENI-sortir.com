@@ -29,10 +29,8 @@ class SortieController extends AbstractController
 
         $sortieForm->handleRequest($request);
 
-        // Si le bouton annuler cliqué on redirige sur la page d'accueil
-        if ($sortieForm->get('annuler')->isClicked()) {
-            return $this->render("main/home.html.twig");
-        }
+
+
 
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
@@ -50,7 +48,8 @@ class SortieController extends AbstractController
             $entityManager->persist($sortie);
             $entityManager->flush();
 
-            return $this->render("main/home.html.twig");
+            return $this->render("sortie/ajouter.html.twig", [
+                "sortieForm" => $sortieForm->createView()]);
         }
 
         return $this->render("sortie/ajouter.html.twig", [

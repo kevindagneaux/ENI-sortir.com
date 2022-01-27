@@ -147,7 +147,7 @@ class SortieType extends AbstractType
             'required' => true,
             'placeholder' => "Selectionner une ville d'abord",
             'class' => 'App\Entity\Lieu',
-            'choices' => $lieus,
+            'choice_label' => 'nom',
             "attr" => ["class" => "form_sortie"
             ]
         ]);
