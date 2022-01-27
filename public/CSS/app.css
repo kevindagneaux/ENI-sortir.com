@@ -60,11 +60,30 @@ label{
     display: block;
 }
 
-.form_sortie {
-    margin-bottom: 1em;
-    box-sizing: border-box;
-    max-width: 75%;
-    width:13em ;
+.containerFormSortie {
+    display: flex;
+    flex-flow: row wrap;
+    margin: auto;
+    justify-content: center;
 }
 
+.childFormSortie {
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 4em;
+
+}
+
+.form_sortie {
+    display: block;
+    margin-bottom: 1em;
+    box-sizing: border-box;
+    max-width: 85%;
+    width: 17em;
+}
+
+.titre{
+    text-align: center;
+    margin-bottom: 1em;
+}
 

@@ -1,10 +1,82 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-
+    <h1 class="titre">Créer une sortie</h1>
     {{ form_start(sortieForm) }}
+    <div class="containerFormSortie">
 
-    {{ form_widget(sortieForm) }}
+        <div class="childFormSortie">
+
+            {{ form_row(sortieForm.nom) }}
+            {{ form_row(sortieForm.dateHeureDebut) }}
+            {{ form_row(sortieForm.dateLimiteInscription) }}
+            {{ form_row(sortieForm.nbInscriptionMax) }}
+            {{ form_row(sortieForm.duree) }}
+            {{ form_row(sortieForm.infosSortie) }}
+
+        </div>
+
+        <div class="childFormSortie">
+
+            {{ form_row(sortieForm.ville) }}
+            {{ form_row(sortieForm.lieuSortie) }}
+
+        </div>
+
+    </div>
+
+    <div class="containerFormSortie">
+
+        {{ form_row(sortieForm.etat) }}
+        {{ form_row(sortieForm.etatPublier) }}
+        {{ form_row(sortieForm.annuler) }}
+
+    </div>
 
     {{ form_end(sortieForm) }}
+{% endblock %}
+
+{% block javaScripts %}
+
+    <script>
+        function triLieus() {
+
+            const menu = document.querySelector('#sortie_ville');
+
+            menu.addEventListener("change", function () {
+
+                let url = new URL('{{ url('sortie_listLieusEnFonctionDesVilles') }}');
+
+                let params = {"id": menu.value};
+
+                url.search = new URLSearchParams(params).toString();
+
+                fetch(url, {
+                    method: "GET",
+                })
+                    .then(response => response.json())
+                    .then(response => {
+                        let options = "";
+                        console.log(response);
+                        let lieuSelector = document.querySelector('#sortie_lieuSortie');
+
+
+                        response.map(lieu => {
+                            options += `<option value="${lieu.id}">${lieu.nom}</option>`;
+                        })
+
+                        lieuSelector.innerHTML = options;
+                        console.log(options);
+
+                    }).catch(e => {
+                    console.log(e);
+                });
+            })
+        }
+
+        window.onload = () => {
+
+            triLieus();
+        }
+    </script>
 {% endblock %}
