@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Sortie;
+use App\Entity\User;
 use App\Form\SearchFormType;
 use App\Modele\Search;
 use App\Repository\SortieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +34,44 @@ class MainController extends AbstractController
 
         ]);
 
+    }
+
+    /**
+     * @Route("/accueil/{id}", name="inscription")
+     * */
+    public function inscription(int $id, EntityManagerInterface $entityManager, SortieRepository $sortieRepository){
+
+        $user = $this->getUser();
+        $sortie = $sortieRepository->find($id);
+
+        if (!$sortie){ throw $this->createNotFoundException('pas connu'); }
+
+        $sortie->addUser($user);
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'inscription avec succès!');
+        return $this->redirectToRoute('accueil');
+    }
+
+    /**
+     * @Route("/accueil/{id}", name="desistement")
+     * */
+    public function desistement(int $id2, EntityManagerInterface $entityManager, SortieRepository $sortieRepository){
+
+        $user = $this->getUser();
+        $sortie = $sortieRepository->find($id2);
+
+        if (!$sortie){ throw $this->createNotFoundException('pas connu');}
+
+        $sortie->removeUser($user);
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Vous avez été desinscrit avec succès!');
+        return $this->redirectToRoute('accueil');
     }
 
 }

@@ -50,7 +50,7 @@ class Sortie
     private $infosSortie;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="Sortie")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="inscrit")
      */
     private $users;
 
