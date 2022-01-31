@@ -13,17 +13,32 @@
 <td>{{ app.user in sortie.users ?'x' :' '}}</td>
 <td><a href="#" >{{sortie.organisateur.pseudo}}</a></td>
 <td>
+    {# Affichage des actions possible pour les sorties qui n'ont pas été créer par l'utilisateur #}
     {% if app.user != sortie.organisateur %}
-    <a href="#">Afficher</a>
-    {% if app.user not in sortie.users %}
-        {% if sortie.etat.libelle == "Ouverte" %}
-            <a href="{{ path('inscription', {'id': sortie.id})}}">S'inscrire</a>
+        <a href="#">Afficher</a>
+        {# Si l'utilisateur ne se trouve pas dans la liste des inscrits de la sortie #}
+        {% if app.user not in sortie.users %}
+            {# Et si la sortie est a l'état "Ouverte", on affiche l'action "s'inscrire" #}
+            {% if sortie.etat.libelle == "Ouverte" %}
+                <a href="{{ path('inscription', {'id': sortie.id})}}">S'inscrire</a>
+            {% endif %}
+            {# Sinon on affiche l'action de "se désister" #}
+        {% else %}
+            <a href="{{ path('desistement', {'id': sortie.id})}}">Se désister</a>
         {% endif %}
+    {#  Sinon affichage des actions possible pour les sorties qui ont été créer par l'utilisateur #}
     {% else %}
-    <a href="{{ path('desistement', {'id': sortie.id})}}">Se desinscrire</a>
-    {% endif %}
-    {% else %}
-    <a href="#">Modifier</a>
-    <a href="#">Publier</a>
+        {% if sortie.etat.libelle != "Annulé" %}
+        {# On affiche l'actions "modifier" pour la sortie #}
+        <a href="#">Modifier</a>
+            {# Si l'état de la sortie est "créée on affiche l'actions "publier" la sortie #}
+            {% if sortie.etat.libelle == "Créée" %}
+                <a href="#">Publier</a>
+            {# Sinon on affiche l'action "d'annuler" la sortie #}
+            {% else %}
+                <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
+            {% endif %}
+        {% else %}
+        {% endif %}
     {% endif %}
 </td>
