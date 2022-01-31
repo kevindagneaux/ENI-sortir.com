@@ -1,0 +1,29 @@
+<td>{{ sortie.nom }}</td>
+<td>{{ sortie.dateHeureDebut| date('d/M/Y h:m') }}</td>
+<td>{{ sortie.dateLimiteInscription| date('d/M/Y') }}</td>
+<td>
+    {% if sortie.users != null %}
+    {{ sortie.users | length }}
+    {% else %}
+    0
+    {% endif %}
+    /{{ sortie.nbInscriptionMax }}
+</td>
+<td>{{ sortie.etat.libelle }}</td>
+<td>{{ app.user in sortie.users ?'x' :' '}}</td>
+<td><a href="#" >{{sortie.organisateur.pseudo}}</a></td>
+<td>
+    {% if app.user != sortie.organisateur %}
+    <a href="#">Afficher</a>
+    {% if app.user not in sortie.users %}
+        {% if sortie.etat.libelle == "Ouverte" %}
+            <a href="{{ path('inscription', {'id': sortie.id})}}">S'inscrire</a>
+        {% endif %}
+    {% else %}
+    <a href="{{ path('desistement', {'id': sortie.id})}}">Se desinscrire</a>
+    {% endif %}
+    {% else %}
+    <a href="#">Modifier</a>
+    <a href="#">Publier</a>
+    {% endif %}
+</td>
