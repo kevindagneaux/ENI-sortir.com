@@ -163,7 +163,7 @@ class SortieController extends AbstractController
     }
 
     /**
-     * @Route("/sortie/modifier/{id}",name="sortie_afficher")
+     * @Route("/sortie/modifier/{id}",name="sortie_modifier")
      */
     public function modifierSortie(Request $request, int $id, EntityManagerInterface $em)
     {
