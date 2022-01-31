@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Entity\User;
 use App\Form\SearchFormType;
 use App\Modele\Search;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +20,7 @@ class MainController extends AbstractController
     /**
      * @Route("/accueil", name="accueil")
      * */
-    public function accueil(Request $request, SortieRepository $sortieRepository):Response{
+    public function accueil(Request $request, EtatRepository $etatRepository, SortieRepository $sortieRepository):Response{
 
         $search = new Search();
         $search->setCampus($this->getUser()->getParticipantCampus());
@@ -26,14 +28,14 @@ class MainController extends AbstractController
         $searchSortie->handleRequest($request);
 
         $sorties = $sortieRepository->searchSortie($search);
+       // if (getdate(now) > $sorties->getDateHeureDebut())
+       // $sorties->setEtat($etatRepository->findOneBy(['libelle' => 'Ouverte']));
        // var_dump($sorties);
 
         return $this-> render('main/home.html.twig', [
             'sorties' => $sorties,
             'searchSortie' => $searchSortie -> createView(),
-
         ]);
-
     }
 
     /**
@@ -74,4 +76,21 @@ class MainController extends AbstractController
         return $this->redirectToRoute('accueil');
     }
 
+    /**
+     * @Route("/accueil/publier/{id}", name="publier")
+     * */
+    public function publier(int $id, EntityManagerInterface $entityManager, EtatRepository $etatRepository, SortieRepository $sortieRepository){
+
+        $sortie = $sortieRepository->find($id);
+
+        if (!$sortie){ throw $this->createNotFoundException('pas connu');}
+
+        $sortie->setEtat($etatRepository->findOneBy(['libelle' => 'Ouverte']));
+
+        $entityManager->persist($sortie);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Vous avez publiez votre sortie. Félicitations!');
+        return $this->redirectToRoute('accueil');
+    }
 }

@@ -42,6 +42,7 @@ class SortieRepository extends ServiceEntityRepository
         }
         if ($search->getInscrit()){
             $queryBuilder->andWhere(':user member of s.users')->setParameter('user', $this->security->getUser());
+            $queryBuilder->andWhere('s.organisateur != :organisateur ')->setParameter('organisateur', $this->security->getUser());
         }
         if ($search->getNonInscrit()){
             $queryBuilder->andWhere(':user2 not member of s.users')->setParameter('user2', $this->security->getUser());
