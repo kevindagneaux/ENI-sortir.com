@@ -79,23 +79,7 @@ class SortieType extends AbstractType
                 "attr" => ["class" => "form_sortie"
                 ]
             ])
-            /*
-            ->add('ville', EntityType::class, [
-                'label' => 'Ville :',
-                'class' => Ville::class,
-                'choice_label' => 'nom',
-                'mapped'=>false,
-                "attr" => ["class" => "form_sortie"
-                ]
-            ])
-            ->add('lieuSortie', EntityType::class, [
-                'label' => 'Lieu :',
-                'class' => Lieu::class,
-                'choice_label' => 'nom',
-                "attr" => ["class" => "form_sortie"
-                ]
-            ])
-            */
+
             ->add('etat', SubmitType::class, [
                 'label' => 'Enregistrer',
                 "attr" => ["class" => "form_sortie"
@@ -105,12 +89,8 @@ class SortieType extends AbstractType
                 'label' => 'Publier la sortie',
                 "attr" => ["class" => "form_sortie"
                 ]
-            ])
-            ->add('annuler', SubmitType::class, [
-                'label' => 'Annuler',
-                "attr" => ["class" => "form_sortie"
-                ]
             ]);
+
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'onPreSetData'));
         $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmit'));
     }

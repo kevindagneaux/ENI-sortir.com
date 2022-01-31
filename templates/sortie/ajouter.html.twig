@@ -18,6 +18,7 @@
 
         <div class="childFormSortie">
 
+            <p class="form_sortie">Campus : {{ app.user.participantCampus.nom }}</p>
             {{ form_row(sortieForm.ville) }}
             {{ form_row(sortieForm.lieuSortie) }}
 
@@ -29,7 +30,7 @@
 
         {{ form_row(sortieForm.etat) }}
         {{ form_row(sortieForm.etatPublier) }}
-        {{ form_row(sortieForm.annuler) }}
+        <button class="form_sortie"><a href="{{ path('accueil')}}">Annuler</a></button>
 
     </div>
 

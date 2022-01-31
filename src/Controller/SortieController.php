@@ -2,14 +2,15 @@
 
 namespace App\Controller;
 
-
+use App\Entity\Campus;
+use App\Entity\Etat;
+use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Form\SortieAnnulerType;
 use App\Form\SortieType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
-use App\Repository\LieuRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,9 +30,6 @@ class SortieController extends AbstractController
 
         $sortieForm->handleRequest($request);
 
-
-
-
         if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
 
             // Si le bouton enregitrer est cliqué on passe l'état créée, si c'est le bouton publié on pase l'état publié
@@ -48,8 +46,7 @@ class SortieController extends AbstractController
             $entityManager->persist($sortie);
             $entityManager->flush();
 
-            return $this->render("sortie/ajouter.html.twig", [
-                "sortieForm" => $sortieForm->createView()]);
+            return $this->redirectToRoute('accueil');
         }
 
         return $this->render("sortie/ajouter.html.twig", [
@@ -58,16 +55,14 @@ class SortieController extends AbstractController
         ]);
     }
 
-
     /**
      * @param Request $request
      * @return JsonResponse
      * @Route("/sortie/villeLieus",name="sortie_listLieusEnFonctionDesVilles")
      */
 
-    public function listLieusEnFonctionDesVilles(Request $request)
+    public function listLieusEnFonctionDesVilles(Request $request, EntityManagerInterface $em)
     {
-        $em = $this->getDoctrine()->getManager();
         $lieuRepository = $em->getRepository("App:Lieu");
 
         $lieus = $lieuRepository->createQueryBuilder("q")
@@ -86,5 +81,51 @@ class SortieController extends AbstractController
         return new JsonResponse($response);
     }
 
+    /**
+     * @Route("/sortie/annuler/{id}",name="sortie_annuler")
+     */
 
+    public function annulerSortie(Request $request, int $id, EntityManagerInterface $em)
+    {
+    $sortie = new Sortie();
+    $campus = new Campus();
+    $lieu = new Lieu();
+
+        $RepositorySortie = $em->getRepository(Sortie::class);
+        $sortie = $RepositorySortie->find($id);
+
+        $RepositoryCampus = $em->getRepository(Campus::class);
+        $campus = $RepositoryCampus->find($sortie->getSiteOrganisateur());
+
+        $RepositoryLieu = $em->getRepository(Lieu::class);
+        $lieu = $RepositoryLieu->find($sortie->getLieuSortie());
+
+        $RepositoryEtat = $em->getRepository(Etat::class);
+
+        $date = date_format($sortie->getDateHeureDebut(),'Y-m-d');
+
+        $form = $this->createForm(SortieAnnulerType::class, $sortie);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $etat = $RepositoryEtat->findOneBy(['libelle' => 'Annulé']);
+            $sortie->setEtat($etat);
+            $em->persist($sortie);
+            $em->flush();
+
+            return $this->redirectToRoute('accueil');
+
+        }
+        return $this->render("sortie/annuler.html.twig", [
+            "sortieForm" => $form->createView(),
+            "sortie" => $sortie,
+            "campus"=> $campus,
+            "lieu"=>$lieu,
+            "date"=>$date,
+        ]);
+
+    }
 }
+
