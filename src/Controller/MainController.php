@@ -56,12 +56,12 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/accueil/{id}", name="desistement")
+     * @Route("/accueil/desistement/{id}", name="desistement")
      * */
-    public function desistement(int $id2, EntityManagerInterface $entityManager, SortieRepository $sortieRepository){
+    public function desistement(int $id, EntityManagerInterface $entityManager, SortieRepository $sortieRepository){
 
         $user = $this->getUser();
-        $sortie = $sortieRepository->find($id2);
+        $sortie = $sortieRepository->find($id);
 
         if (!$sortie){ throw $this->createNotFoundException('pas connu');}
 

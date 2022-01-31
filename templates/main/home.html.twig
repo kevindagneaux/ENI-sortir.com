@@ -34,7 +34,14 @@
                     <td>{{ sortie.nom }}</td>
                     <td>{{ sortie.dateHeureDebut| date('d/M/Y h:m') }}</td>
                     <td>{{ sortie.dateLimiteInscription| date('d/M/Y') }}</td>
-                    <td>8/{{ sortie.nbInscriptionMax }}</td>
+                    <td>
+                        {% if sortie.users != null %}
+                            {{ sortie.users | length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                        /{{ sortie.nbInscriptionMax }}
+                    </td>
                     <td>{{ sortie.etat.libelle }}</td>
                     <td>{{ app.user in sortie.users ?'x' :' '}}</td>
                     <td>{{ sortie.organisateur.pseudo }}</td>
