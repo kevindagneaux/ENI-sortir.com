@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
+{% block titre %}<h1 class="titre">Créer une sortie</h1>{% endblock %}
 {% block body %}
-    <h1 class="titre">Créer une sortie</h1>
     {{ form_start(sortieForm) }}
     <div class="containerFormSortie">
 
@@ -30,7 +30,9 @@
 
         {{ form_row(sortieForm.etat) }}
         {{ form_row(sortieForm.etatPublier) }}
-        <button class="form_sortie"><a href="{{ path('accueil')}}">Annuler</a></button>
+        <button class="form_sortie"><a href="{{ path('accueil') }}">Annuler</a></button>
+
+        {% block bouton %}{% endblock %}
 
     </div>
 

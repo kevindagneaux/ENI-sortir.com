@@ -1,8 +1,6 @@
 {% extends "base.html.twig" %}
-
+{% block titre %}<h1 class="titre">Afficher une sortie</h1>{% endblock %}
 {% block body %}
-    <h1 class="titre">Afficher une sortie</h1>
-
 
     <div class="containerFormSortie">
 
@@ -42,25 +40,22 @@
 
     <h3>Liste des participants inscrits :</h3>
 
-    {% for user in sortie.users %}
+    <table class="tableauUsers">
+        <thead>
+        <tr>
+            <th class="tableauUsers">Pseudo</th>
+            <th class="tableauUsers">Nom</th>
+        </tr>
+        </thead>
 
-        <table class="tableauUsers">
-            <thead>
-            <tr>
-                <th class="tableauUsers">Pseudo</th>
-                <th class="tableauUsers">Nom</th>
-            </tr>
-            </thead>
-
+        {% for user in sortie.users %}
             <tbody>
             <tr>
-                <td class="tableauUsers">{{ user.pseudo }}</td>
+                <td class="tableauUsers"><a href="#">{{ user.pseudo }}</a></td>
                 <td class="tableauUsers">{{ user.pseudo }} {{ user.nom }}</td>
             </tr>
             </tbody>
-
-        </table>
-
-    {% endfor %}
+        {% endfor %}
+    </table>
 
 {% endblock %}

@@ -79,7 +79,6 @@ class SortieType extends AbstractType
                 "attr" => ["class" => "form_sortie"
                 ]
             ])
-
             ->add('etat', SubmitType::class, [
                 'label' => 'Enregistrer',
                 "attr" => ["class" => "form_sortie"
@@ -87,6 +86,11 @@ class SortieType extends AbstractType
             ])
             ->add('etatPublier', SubmitType::class, [
                 'label' => 'Publier la sortie',
+                "attr" => ["class" => "form_sortie"
+                ]
+            ])
+            ->add('supprimer', SubmitType::class, [
+                'label' => 'Supprimer la sortie',
                 "attr" => ["class" => "form_sortie"
                 ]
             ]);
@@ -100,13 +104,13 @@ class SortieType extends AbstractType
         $ville = null;
 
         $form->add('ville', EntityType::class, [
-            'required' => true,
+            'required' => false,
             'placeholder' => 'Selectionner une ville',
             'class' => 'App\Entity\Ville',
             'choice_label' => "nom",
             'data' => $ville,
             'mapped' => false,
-            "attr" => ["class" => "form_sortie"
+            "attr" => ["class" => "form_sortie",
             ]
         ]);
 

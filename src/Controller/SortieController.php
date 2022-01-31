@@ -29,6 +29,7 @@ class SortieController extends AbstractController
         $sortie = new Sortie();
 
         $sortieForm = $this->createForm(SortieType::class, $sortie);
+        $sortieForm->remove('supprimer');
 
         $sortieForm->handleRequest($request);
 
@@ -38,8 +39,8 @@ class SortieController extends AbstractController
             $etatTemp = $sortieForm->get('etat')->isClicked() ? 'Créée' : 'Ouverte';
             $etat = $etatRepository->findOneBy(['libelle' => $etatTemp]);
 
-            // todo il faudra faire en sorte de recup l'id de l'user
-            $campus = $campusRepository->findOneBy(['id' => '1']);
+
+            $campus = $campusRepository->findOneBy(['id' => $this->getUser()->getParticipantCampus()]);
 
             $sortie->setEtat($etat);
             $sortie->setSiteOrganisateur($campus);
@@ -148,20 +149,67 @@ class SortieController extends AbstractController
         $dateDebut = date_format($sortie->getDateHeureDebut(), 'Y-m-d');
         $dateFin = date_format($sortie->getDateLimiteInscription(), 'Y-m-d');
 
-
-
         return $this->render("sortie/afficher.html.twig", [
 
-            "sortie"=>$sortie,
-            "campus"=>$campus,
-            "lieu"=>$lieu,
-            "ville"=>$ville,
-            'dateDebut'=>$dateDebut,
-            "dateFin"=>$dateFin,
+            "sortie" => $sortie,
+            "campus" => $campus,
+            "lieu" => $lieu,
+            "ville" => $ville,
+            'dateDebut' => $dateDebut,
+            "dateFin" => $dateFin,
 
         ]);
 
     }
+
+    /**
+     * @Route("/sortie/modifier/{id}",name="sortie_afficher")
+     */
+    public function modifierSortie(Request $request, int $id, EntityManagerInterface $em)
+    {
+
+        $repositorySortie = $em->getRepository(Sortie::class);
+        $etatRepository = $em->getRepository(Etat::class);
+        $campusRepository = $em->getRepository(Campus::class);
+
+        $sortie = $repositorySortie->find($id);
+
+        $sortieForm = $this->createForm(SortieType::class, $sortie);
+
+        $sortieForm->handleRequest($request);
+
+        if ($sortieForm->isSubmitted() && $sortieForm->isValid()) {
+
+            if ($sortieForm->get('supprimer')->isClicked()) {
+
+                $em->remove($sortie);
+                $em->flush();
+                return $this->redirectToRoute('accueil');
+            }
+
+            $etatTemp = $sortieForm->get('etat')->isClicked() ? 'Créée' : 'Ouverte';
+            $etat = $etatRepository->findOneBy(['libelle' => $etatTemp]);
+
+            $campus = $campusRepository->findOneBy(['id' => $this->getUser()->getParticipantCampus()]);
+
+            $sortie->setEtat($etat);
+            $sortie->setSiteOrganisateur($campus);
+            $sortie->setOrganisateur($this->getUser());
+
+            $em->persist($sortie);
+            $em->flush();
+
+            return $this->redirectToRoute('accueil');
+        }
+
+        return $this->render("sortie/modifier.html.twig", [
+            "sortieForm" => $sortieForm->createView(),
+
+        ]);
+
+
+    }
+
 
 }
 
