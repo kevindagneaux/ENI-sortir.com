@@ -4,7 +4,7 @@
     <h1 class="titre">Annuler une sortie</h1>
     <div class="containerFormAnnulerSortie">
         <p class="childFormSortieAnnuler">Nom de la sortie :</p>
-        <p class="childFormSortieAnnuler">sortie.nom</p>
+        <p class="childFormSortieAnnuler">{{ sortie.nom }}</p>
     </div>
 
     <div class="containerFormAnnulerSortie">
@@ -24,7 +24,7 @@
 
     <div class="containerFormAnnulerSortie">
         {{ form_start(sortieForm) }}
-        {{ form_widget(sortieForm) }}
+        {{ form_row(sortieForm.infosSortie) }}
 
     </div>
 

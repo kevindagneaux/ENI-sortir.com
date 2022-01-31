@@ -17,6 +17,9 @@ class SortieAnnulerType extends AbstractType
 
             ->add('infosSortie', TextareaType::class,[
                 'label' => 'Motif :',
+                'empty_data' => 'Annulé',
+                'data' => '',
+
             ] )
         ;
     }

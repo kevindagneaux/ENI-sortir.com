@@ -39,7 +39,7 @@ nav li {
 }
 
 a {
-    color: inherit;
+    color: royalblue;
     text-decoration: none;
 }
 
@@ -101,6 +101,12 @@ label{
     text-align: left;
     width: 50%;
 
-
 }
+
+.tableauUsers{
+    border: 1px solid black;
+    width: 15em;
+}
+
+
 

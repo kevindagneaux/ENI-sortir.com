@@ -6,11 +6,13 @@ use App\Entity\Campus;
 use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Form\SortieAnnulerType;
 use App\Form\SortieType;
 use App\Repository\CampusRepository;
 use App\Repository\EtatRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use http\Client\Curl\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,22 +89,19 @@ class SortieController extends AbstractController
 
     public function annulerSortie(Request $request, int $id, EntityManagerInterface $em)
     {
-    $sortie = new Sortie();
-    $campus = new Campus();
-    $lieu = new Lieu();
 
-        $RepositorySortie = $em->getRepository(Sortie::class);
-        $sortie = $RepositorySortie->find($id);
+        $repositorySortie = $em->getRepository(Sortie::class);
+        $sortie = $repositorySortie->find($id);
 
-        $RepositoryCampus = $em->getRepository(Campus::class);
-        $campus = $RepositoryCampus->find($sortie->getSiteOrganisateur());
+        $repositoryCampus = $em->getRepository(Campus::class);
+        $campus = $repositoryCampus->find($sortie->getSiteOrganisateur());
 
-        $RepositoryLieu = $em->getRepository(Lieu::class);
-        $lieu = $RepositoryLieu->find($sortie->getLieuSortie());
+        $repositoryLieu = $em->getRepository(Lieu::class);
+        $lieu = $repositoryLieu->find($sortie->getLieuSortie());
 
-        $RepositoryEtat = $em->getRepository(Etat::class);
+        $repositoryEtat = $em->getRepository(Etat::class);
 
-        $date = date_format($sortie->getDateHeureDebut(),'Y-m-d');
+        $date = date_format($sortie->getDateHeureDebut(), 'Y-m-d');
 
         $form = $this->createForm(SortieAnnulerType::class, $sortie);
 
@@ -110,7 +109,7 @@ class SortieController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $etat = $RepositoryEtat->findOneBy(['libelle' => 'Annulé']);
+            $etat = $repositoryEtat->findOneBy(['libelle' => 'Annulé']);
             $sortie->setEtat($etat);
             $em->persist($sortie);
             $em->flush();
@@ -121,11 +120,48 @@ class SortieController extends AbstractController
         return $this->render("sortie/annuler.html.twig", [
             "sortieForm" => $form->createView(),
             "sortie" => $sortie,
-            "campus"=> $campus,
-            "lieu"=>$lieu,
-            "date"=>$date,
+            "campus" => $campus,
+            "lieu" => $lieu,
+            "date" => $date,
         ]);
 
     }
+
+    /**
+     * @Route("/sortie/afficher/{id}",name="sortie_afficher")
+     */
+    public function afficherSortie(Request $request, int $id, EntityManagerInterface $em)
+    {
+
+        $repositorySortie = $em->getRepository(Sortie::class);
+        $sortie = $repositorySortie->find($id);
+
+        $repositoryCampus = $em->getRepository(Campus::class);
+        $campus = $repositoryCampus->find($sortie->getSiteOrganisateur());
+
+        $repositoryLieu = $em->getRepository(Lieu::class);
+        $lieu = $repositoryLieu->find($sortie->getLieuSortie());
+
+        $repossitoryVille = $em->getRepository(Ville::class);
+        $ville = $repossitoryVille->find($lieu->getLieuVille());
+
+        $dateDebut = date_format($sortie->getDateHeureDebut(), 'Y-m-d');
+        $dateFin = date_format($sortie->getDateLimiteInscription(), 'Y-m-d');
+
+
+
+        return $this->render("sortie/afficher.html.twig", [
+
+            "sortie"=>$sortie,
+            "campus"=>$campus,
+            "lieu"=>$lieu,
+            "ville"=>$ville,
+            'dateDebut'=>$dateDebut,
+            "dateFin"=>$dateFin,
+
+        ]);
+
+    }
+
 }
 

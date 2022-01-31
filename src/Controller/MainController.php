@@ -26,7 +26,7 @@ class MainController extends AbstractController
         $searchSortie->handleRequest($request);
 
         $sorties = $sortieRepository->searchSortie($search);
-        // var_dump($sorties);
+       // var_dump($sorties);
 
         return $this-> render('main/home.html.twig', [
             'sorties' => $sorties,
