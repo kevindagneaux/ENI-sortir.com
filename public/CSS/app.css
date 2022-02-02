@@ -10,7 +10,6 @@ body {
 }
 
 nav ul {
-
     display: flex;
     list-style: none;
     padding-left: 0;
@@ -114,6 +113,11 @@ tr:nth-child(even) {
 
 th {
     background-color: skyblue;
+}
+
+.tableauUsers{
+    max-width: 50%;
+
 }
 
 
