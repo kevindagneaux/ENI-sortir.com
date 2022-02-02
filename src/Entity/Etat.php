@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Etat
 {
+    const OUVERT = 'Ouverte';
+    const CLOTURER = 'Clôturée';
+    const PASSER = 'passée';
+    const EN_COURS = 'Activité en cours';
+    const ARCHIVER = 'Archivée';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

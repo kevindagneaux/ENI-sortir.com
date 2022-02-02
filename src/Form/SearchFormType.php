@@ -33,7 +33,7 @@ class SearchFormType extends AbstractType
                 'required' => false,
             ])
             ->add('dateFin', DateType::class, [
-                'label' => 'Entre',
+                'label' => 'Et',
                 'widget' => 'single_text',
                 'required' => false,
             ])

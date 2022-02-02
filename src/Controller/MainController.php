@@ -9,6 +9,7 @@ use App\Form\SearchFormType;
 use App\Modele\Search;
 use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
+use App\Services\GestionEtat;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,17 +21,17 @@ class MainController extends AbstractController
     /**
      * @Route("/accueil", name="accueil")
      * */
-    public function accueil(Request $request, EtatRepository $etatRepository, SortieRepository $sortieRepository):Response{
+    public function accueil(Request $request, EtatRepository $etatRepository, SortieRepository $sortieRepository, GestionEtat $gestionEtat):Response{
 
         $search = new Search();
         $search->setCampus($this->getUser()->getParticipantCampus());
         $searchSortie = $this->createForm(SearchFormType::class,  $search );
         $searchSortie->handleRequest($request);
 
+        $gestionEtat->updateEtat();
         $sorties = $sortieRepository->searchSortie($search);
-       // if (getdate(now) > $sorties->getDateHeureDebut())
-       // $sorties->setEtat($etatRepository->findOneBy(['libelle' => 'Ouverte']));
-       // var_dump($sorties);
+
+       //dump(DATE_ADD(new \DateTime(),  date_interval_create_from_date_string("-30 days")));
 
         return $this-> render('main/home.html.twig', [
             'sorties' => $sorties,

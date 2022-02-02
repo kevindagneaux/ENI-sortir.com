@@ -2,17 +2,36 @@
 
 {% block body %}
    <div id="front">
-       <h4>Date du jour: {{ "now" |date('d-m-y') }}</h4>
-       <h4>Participant: Micheline.M{# {{ app.user.pseudo }} #}</h4>
+       <h4>Date du jour :  {{ "now" |date('d-m-y') }}</h4>
+       <h4>Participants :  {{ app.user.pseudo }}</h4>
    </div>
     <h3>Filtrer les sorties :</h3>
-    <div>
+    <div class="container-fluid">
         {{ form_start(searchSortie) }}
-        {{ form_widget(searchSortie) }}
-
-        <button type="submit">Rechercher</button>
+         <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    {{ form_row(searchSortie.campus) }}
+                </div>
+                <div class="row">
+                    {{ form_row(searchSortie.search)}}
+                </div>
+                <div class="row">
+                    {{ form_row(searchSortie.dateDebut)}}
+                    {{ form_label(searchSortie.dateFin)}}{{ form_widget(searchSortie.dateFin) }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                {{ form_widget(searchSortie.organisateur) }}{{ form_label(searchSortie.organisateur) }}
+                {{ form_widget(searchSortie.inscrit) }}{{ form_label(searchSortie.inscrit) }}
+                {{ form_widget(searchSortie.nonInscrit) }}{{ form_label(searchSortie.nonInscrit) }}
+                {{ form_widget(searchSortie.fini) }}{{ form_label(searchSortie.fini) }}
+            </div>
+            <div class="col-md-4">
+                <button type="submit">Rechercher</button>
+            </div>
+        </div>
         {{ form_end(searchSortie) }}
-
     </div>
     <div>
         <table>

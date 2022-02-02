@@ -2,11 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\Etat;
 use App\Entity\Sortie;
 use App\Modele\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
+use function Symfony\Component\String\s;
 
 /**
  * @method Sortie|null find($id, $lockMode = null, $lockVersion = null)
@@ -32,10 +34,10 @@ class SortieRepository extends ServiceEntityRepository
         // todo: ajouter le paramètres de condition pour les sorties vieille de plus d'un mois.
         // $queryBuilder->andWhere('s.dateHeureDebut > datenow'  );
         if ($search->getDateDebut()){
-            $queryBuilder->andWhere('s.dateHeureDebut > ', $search->getDateDebut());
+            $queryBuilder->andWhere('s.dateHeureDebut >  :datedebut')->setParameter('datedebut', $search->getDateDebut());
         }
         if ($search->getDateFin()){
-            $queryBuilder->andWhere('s.dateHeureDebut < ', $search->getDateFin());
+            $queryBuilder->andWhere('s.dateHeureDebut <  :datefin')->setParameter('datefin', $search->getDateFin());
         }
         if ($search->getOrganisateur()){
             $queryBuilder->andWhere('s.organisateur = :organisateur ')->setParameter('organisateur', $this->security->getUser());
@@ -48,8 +50,7 @@ class SortieRepository extends ServiceEntityRepository
             $queryBuilder->andWhere(':user2 not member of s.users')->setParameter('user2', $this->security->getUser());
         }
         if ($search->getFini()){
-            //todo faire le where sur la date du jour ou en utilisant les données dans la table
-            $queryBuilder->andWhere('s.dateHeureDebut < current_date()');
+            $queryBuilder->andWhere('s.dateHeureDebut <= :fini')->setParameter('fini', date('Y-m-d H:i:s') );
         }
         if ($search->getSearch()){
             $queryBuilder->andWhere('s.nom like :search')->setParameter('search', '%'.$search->getSearch().'%');
@@ -62,6 +63,47 @@ class SortieRepository extends ServiceEntityRepository
 
         return $result;
 
+    }
+
+    // Méthode pour retrouvé toute les sorties ouverte dont la date est inférieur ou égal à aujourd'hui
+    public function findSortieOuverte(?Etat $etat)
+    {
+        $qb = $this -> createQueryBuilder('s')
+            ->andWhere('s.etat = :etat' )->setParameter('etat', $etat)
+            ->andWhere('s.dateLimiteInscription <= :debut')->setParameter('debut', new \DateTime());
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // Méthode pour retrouvé toute les sorties clorutée dont la date est inférieur ou égal à aujourd'hui
+    public function findSortieCloturer(?Etat $etat)
+    {
+        $qb = $this -> createQueryBuilder('s')
+            ->andWhere('s.etat = :etat' )->setParameter('etat', $etat)
+            ->andWhere('s.dateHeureDebut <= :debut')->setParameter('debut', new \DateTime());
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // Méthode pour retrouvé toute les sorties en cours dont la date + durée est inférieur ou égal à aujourd'hui
+    public function findSortieEnCours(?Etat $etat)
+    {
+        $qb = $this -> createQueryBuilder('s')
+            ->andWhere('s.etat = :etat' )->setParameter('etat', $etat)
+            // todo: gérer la fonction par rapport a la durée d'une sortie
+            ->andWhere('s.dateHeureDebut <= :debut')->setParameter('debut', DATE_ADD(new \DateTime(),  date_interval_create_from_date_string("1 days")));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // Méthode pour retrouvé toute les sorties passée dont la date est inférieur ou égal à aujourd'hui - 1 mois
+    public function findSortiePasser(?Etat $etat)
+    {
+        $qb = $this -> createQueryBuilder('s')
+            ->andWhere('s.etat = :etat' )->setParameter('etat', $etat)
+            ->andWhere('s.dateHeureDebut <= :debut')->setParameter('debut', DATE_ADD(new \DateTime(),  date_interval_create_from_date_string("-30 days")));
+
+        return $qb->getQuery()->getResult();
     }
 
 }
