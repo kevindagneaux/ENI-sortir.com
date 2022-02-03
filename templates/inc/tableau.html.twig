@@ -25,7 +25,7 @@
             {% endif %}
             {# Sinon on affiche l'action de "se désister" #}
         {% else %}
-            {% if sortie.etat.libelle == "Ouverte"%}
+            {% if sortie.etat.libelle == "Ouverte" or sortie.dateHeureDebut| date('d/M/Y h:m') > "now" |date('d/M/y')%}
             <a href="{{ path('desistement', {'id': sortie.id})}}">Se désister</a>
             {% endif %}
         {% endif %}
