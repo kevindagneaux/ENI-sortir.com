@@ -1,6 +1,11 @@
 body {
     background-attachment: fixed;
     font-family: 'Crimson Pro', serif;
+    margin: 10px;
+}
+
+.button{
+    margin: 10px;
 }
 
 #nav{
@@ -19,7 +24,9 @@ nav li {
     margin-right: 1rem;
 }
 
-.container {
+#container {
+    display: grid ;
+    grid: repeat(2, 100px) / auto-flow 100px;
     max-width: 1000px;
     margin: auto;
     padding: 5px;
@@ -102,9 +109,12 @@ label{
 
 }
 
-table {
-    width: 100%;
+tbody, thead {
     text-align: center;
+    width: 100%;
+    height: auto;
+    display: contents;
+    overflow-y: auto;
 }
 
 tr:nth-child(even) {
@@ -117,7 +127,6 @@ th {
 
 .tableauUsers{
     max-width: 50%;
-
 }
 
 

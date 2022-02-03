@@ -19,21 +19,21 @@ class SearchFormType extends AbstractType
     {
         $builder
             ->add('campus', EntityType::class, [
-               'label'=> 'Campus: ',
+               'label'=> 'Campus : ',
                 'class' => Campus::class,
                 'choice_label' => 'nom',
             ])
             ->add('search', TextType::class, [
-                'label' => 'Le nom de la sortie Contient: ',
+                'label' => 'Le nom de la sortie Contient : ',
                 'required' => false,
             ])
             ->add('dateDebut', DateType::class, [
-                'label' => 'Entre',
+                'label' => 'Entre : ',
                 'widget' => 'single_text',
                 'required' => false,
             ])
             ->add('dateFin', DateType::class, [
-                'label' => 'Et',
+                'label' => 'Et : ',
                 'widget' => 'single_text',
                 'required' => false,
             ])

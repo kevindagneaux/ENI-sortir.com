@@ -11,7 +11,7 @@
 </td>
 <td>{{ sortie.etat.libelle }}</td>
 <td>{{ app.user in sortie.users ?'x' :' '}}</td>
-<td><a href="#" >{{sortie.organisateur.pseudo}}</a></td>
+<td><a href="{{ path('participant_afficher', {'id': sortie.organisateur.id}) }}" >{{sortie.organisateur.pseudo}}</a></td>
 <td>
     {# Affichage des actions possible pour les sorties qui n'ont pas été créer par l'utilisateur #}
     {% if app.user != sortie.organisateur %}
@@ -29,18 +29,16 @@
         {% endif %}
     {#  Sinon affichage des actions possible pour les sorties qui ont été créer par l'utilisateur #}
     {% else %}
-        {# Si l'état de la sorie est Annulé on affiche aucune action possible pour l'utilisateur qui a créer la sortie #}
-        {% if sortie.etat.libelle != "Annulé" %}
-        {# On affiche l'actions "modifier" pour la sortie #}
+        {# Si l'état de la sortie est "créée" on affiche l'actions "publier" ou "Modifier" la sortie #}
+        {% if sortie.etat.libelle == "Créée" %}
             <a href="{{ path('sortie_modifier', {'id': sortie.id}) }}">Modifier</a>
-                {# Si l'état de la sortie est "créée" on affiche l'actions "publier" la sortie #}
-                {% if sortie.etat.libelle == "Créée" %}
-                    <a href="{{ path('publier', {'id': sortie.id}) }}">Publier</a>
-                {# Sinon on affiche l'action "d'annuler" la sortie #}
-                {% else %}
-                    <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
-                {% endif %}
+            <a href="{{ path('publier', {'id': sortie.id}) }}">Publier</a>
+            {# Sinon on affiche l'action "d'annuler" la sortie #}
         {% else %}
+            {# Si l'état de la sorie est Annulé on affiche aucune action possible pour l'utilisateur qui a créer la sortie #}
+            {% if sortie.etat.libelle != "Annulé" and sortie.etat.libelle == "Ouverte" or sortie.etat.libelle == "Clôturée" %}
+                <a href="{{ path('sortie_annuler', {'id': sortie.id}) }}">Annuler</a>
+            {% endif %}
         {% endif %}
     {% endif %}
 </td>
