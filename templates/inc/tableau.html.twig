@@ -25,7 +25,9 @@
             {% endif %}
             {# Sinon on affiche l'action de "se désister" #}
         {% else %}
+            {% if sortie.etat.libelle == "Ouverte"%}
             <a href="{{ path('desistement', {'id': sortie.id})}}">Se désister</a>
+            {% endif %}
         {% endif %}
     {#  Sinon affichage des actions possible pour les sorties qui ont été créer par l'utilisateur #}
     {% else %}
