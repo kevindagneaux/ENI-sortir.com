@@ -40,6 +40,9 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profil, roles: ROLE_USER }
+        # - { path: ^/edit, roles: ROLE_USER }
+        # - { path: ^/accueil, roles: ROLE_USER }
+        # - { path: ^/sortie, roles: ROLE_USER }
 
 when@test:
     security:
