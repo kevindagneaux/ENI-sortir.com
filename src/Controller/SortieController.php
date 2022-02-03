@@ -38,7 +38,6 @@ class SortieController extends AbstractController
             $etatTemp = $sortieForm->get('etat')->isClicked() ? 'Créée' : 'Ouverte';
             $etat = $etatRepository->findOneBy(['libelle' => $etatTemp]);
 
-
             $campus = $campusRepository->findOneBy(['id' => $this->getUser()->getParticipantCampus()]);
 
             $sortie->setEtat($etat);
@@ -53,7 +52,6 @@ class SortieController extends AbstractController
 
         return $this->render("sortie/ajouter.html.twig", [
             "sortieForm" => $sortieForm->createView(),
-
         ]);
     }
 
@@ -158,7 +156,6 @@ class SortieController extends AbstractController
             "dateFin" => $dateFin,
 
         ]);
-
     }
 
     /**
@@ -208,7 +205,6 @@ class SortieController extends AbstractController
 
 
     }
-
 
 }
 

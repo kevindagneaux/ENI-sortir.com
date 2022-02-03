@@ -31,8 +31,10 @@ class SortieRepository extends ServiceEntityRepository
         // Version QueryBuilder
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->andWhere('s.siteOrganisateur = :campus')->setParameter('campus', $search->getCampus());
-        // todo: ajouter le paramètres de condition pour les sorties vieille de plus d'un mois.
-        // $queryBuilder->andWhere('s.dateHeureDebut > datenow'  );
+
+        //$queryBuilder->andWhere('s.etat != :etat')->setParameter('etat', "Archivée");
+
+        $queryBuilder->andWhere('s.dateHeureDebut > :date')->setParameter('date', DATE_ADD(new \DateTime(), date_interval_create_from_date_string("-30 days")));
         if ($search->getDateDebut()){
             $queryBuilder->andWhere('s.dateHeureDebut >  :datedebut')->setParameter('datedebut', $search->getDateDebut());
         }
